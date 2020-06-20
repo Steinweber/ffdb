@@ -320,3 +320,10 @@ It is really very easy to write your own adapter for your own storage format. Th
 - [ ] Simplify change storage adaptor
 - [ ] `update()` for \Result (update data in all found datasets)
 - [ ] Creating "black hole" (a adaptor for inserts without loading the full file to php) for logs
+- [ ] Creat cache controller
+- [ ] Add APCu
+- [ ] Add memcached
+- [ ] Add file cache
+- [ ] Add OPCache file cache
+- [ ] Update `or()` to soft and hard break
+- [ ] PHP Tests :/
