@@ -4,9 +4,14 @@
 namespace FFDB\Helper;
 
 
+use FilesystemIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+
 class File
 {
-    public static function read($file){
+    public static function read($file)
+    {
         if (!is_dir($file) && is_readable($file) && filesize($file)) {
             $handle = fopen($file, 'r');
 
@@ -23,7 +28,7 @@ class File
         return null;
     }
 
-    public static function write($file,$content){
+    public static function write($file, $content){
         if(!is_dir($file)){
             $handle = fopen($file, 'w');
 
@@ -72,19 +77,21 @@ class File
         }
     }
 
-    public static function createDirIfNotExists($path){
+    public static function createDirIfNotExists($path)
+    {
         $path = File::path($path);
-        if(!is_dir($path)){
-            mkdir($path,0777);
+        if (!is_dir($path)) {
+            mkdir($path, 0777);
         }
     }
 
-    public static function clearFolder($path){
+    public static function clearFolder($path)
+    {
         $path = File::path($path);
-        $di = new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS);
-        $ri = new \RecursiveIteratorIterator($di, \RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ( $ri as $file ) {
-            $file->isDir() ?  rmdir($file->getRealPath()) : unlink($file->getRealPath());
+        $di = new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS);
+        $ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
+        foreach ($ri as $file) {
+            $file->isDir() ? rmdir($file->getRealPath()) : unlink($file->getRealPath());
         }
         rmdir($path);
         return true;

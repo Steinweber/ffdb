@@ -36,15 +36,24 @@ class Operator
         return $specification >= $statement;
     }
 
-    public static function contains($specification,$statement){
-        return in_array($statement,$specification);
+    public static function contains($specification, $statement)
+    {
+        if (!is_array($statement)) {
+            return false;
+        }
+        return in_array($specification, $statement);
     }
 
-    public static function notContains($specification,$statement){
-        return !in_array($statement,$specification);
+    public static function notContains($specification, $statement)
+    {
+        if (!is_array($statement)) {
+            return false;
+        }
+        return !in_array($specification, $statement);
     }
 
-    public static function regex($specification,$statement){
-        return preg_match($specification,$statement)?true:false;
+    public static function regex($specification, $statement)
+    {
+        return preg_match($specification, $statement) ? true : false;
     }
 }

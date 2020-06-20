@@ -1,23 +1,20 @@
 <?php
 
-//this should be handled by any autoload function
-require_once __DIR__.'/helper/registry.php';
-require_once __DIR__.'/helper/file.php';
-require_once __DIR__.'/instance/instance.php';
-require_once __DIR__.'/instance/index.php';
-require_once __DIR__.'/instance/instanceindex.php';
-require_once __DIR__.'/instance/container.php';
-require_once __DIR__.'/instance/method.php';
-require_once __DIR__.'/instance/data.php';
-require_once __DIR__.'/instance/filter.php';
-require_once __DIR__.'/instance/filter/rule.php';
-require_once __DIR__ .'/instance/filter/operator.php';
-require_once __DIR__ .'/instance/filter/logic.php';
-require_once __DIR__ .'/instance/filter/execute.php';
-require_once __DIR__.'/instance/filter/result.php';
-require_once __DIR__.'/instance/filter/stats.php';
+function ffdb_al($class)
+{
+    if (substr($class, 0, 4) == 'FFDB') {
+        $class = str_replace(['ffdb', '\\'], ['', '/'], strtolower($class));
+    }
+    $file = __DIR__ . $class . '.php';
+    if (is_file($file)) {
+        require_once $file;
+    }
+    return true;
+}
 
-use FFDB\Instance;
+spl_autoload_register('ffdb_al');
+
+use FFDB\Instance\Instance;
 use FFDB\Instance\Index;
 use FFDB\Helper\Registry;
 
@@ -39,6 +36,7 @@ class FFDB
         $this->registry->set('path', $path);
         $this->registry->set('instance_default_format', 'json');
         $this->registry->set('index', new Index($this->registry));
+        $this->registry->microtime->set('init', microtime(true));
     }
 
     public function table($db_name) {
@@ -107,16 +105,29 @@ class FFDB
         return true;
     }
 
-    private function setTableConfig($key,$value){
+    private function setTableConfig($key, $value)
+    {
         $this->resetTableConfig();
         $this->table_pre_method = true;
         $this->table_method[$key] = $value;
     }
 
-    private function resetTableConfig(){
+    private function resetTableConfig()
+    {
         $this->table_pre_method = false;
-        foreach ($this->table_method as $key => $value){
+        foreach ($this->table_method as $key => $value) {
             $this->table_method[$key] = false;
+        }
+    }
+
+    public function __destruct()
+    {
+        echo "Timings: \n";
+        $start = $this->registry->microtime->get('init');
+        foreach ($this->registry->microtime->data() as $key => $ms) {
+            if ($key === 'init')
+                continue;
+            var_dump($key . ' ' . ($ms - $start) * 1000);
         }
     }
 }
