@@ -290,12 +290,12 @@ where('orders')->child('order_id')->equal('12345')->get();
 | regex($regEx) | preg_match() | yes | 
 | exists($key) | isset() | no | 
 | notExists($key) | !isset() | no | 
-| IsNull($key) | ($document[$key] === null) | no | 
-| IsNotNull($key) | ($document[$key] !== null) | no | 
-| IsEmpty($key) | empty($document[$key]) | no | 
-| IsNotEmpty($key) | !empty($document[$key]) | no | 
-| existsAndEmpty($key) | (isset($document[$key] && empty($document[$key])) | no | 
-| existsAndNotEmpty($key) | (isset($document[$key] && !empty($document[$key])) | no |
+| IsNull() | ($document[$key] === null) | no | 
+| IsNotNull() | ($document[$key] !== null) | no | 
+| IsEmpty() | empty($document[$key]) | no | 
+| IsNotEmpty() | !empty($document[$key]) | no | 
+| existsAndEmpty() | (isset($document[$key] && empty($document[$key])) | no | 
+| existsAndNotEmpty() | (isset($document[$key] && !empty($document[$key])) | no |
 ***
 ## Storage Format Adaptor
 It is really very easy to write your own adapter for your own storage format. The adapter can simply be put into the folder and is automatically loaded when needed.
